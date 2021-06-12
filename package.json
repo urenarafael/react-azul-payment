@@ -11,6 +11,7 @@
     "crypto": "^1.0.1",
     "dollars-to-cents": "^1.0.3",
     "jssha": "^3.2.0",
+    "query-string": "^7.0.0",
     "react": "^17.0.2",
     "react-content-loader": "^6.0.3",
     "react-dom": "^17.0.2",

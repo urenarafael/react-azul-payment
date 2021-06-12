@@ -12,15 +12,23 @@ import {
   Route,
   useParams
 } from 'react-router-dom'
+import queryString from 'query-string';
 
-const reqConf = {
-  url: 'http://localhost:3002/commons/storage'
+const configs = {
+  apiUrl: 'https://api.nateevos.com/',
+  storageUrl: 'https://api.nateevos.com/commons/storage',
+  baseUrl: 'https://payments.nateevos.com/'
 }
+// const configs = {
+//   apiUrl: 'http://localhost:3002/',
+//   storageUrl: 'http://localhost:3002/commons/storage',
+//   baseUrl: 'http://localhost:3001/'
+// }
 
 const Application = () => {
   const { storageId } = useParams()
 
-  const url = `${reqConf.url}/${storageId}`
+  const url = `${configs.storageUrl}/${storageId}`
 
   const [data, setData] = useState(info)
   const [auth, setAuth] = useState('')
@@ -31,29 +39,15 @@ const Application = () => {
   const setUpData = (orderId, amount) => {
     setData({
       ...info,
-      OrderNumber: String(orderId).padStart(6, '0'),
+      OrderNumber: (orderId),
+      ApprovedUrl: `${configs.baseUrl}successtmp?ApprovedTemp`, // uri where will be saved payment info , then will redirect to the last one
+      CancelUrl:  `${configs.baseUrl}${orderId}?Cancelled`,
+      DeclinedUrl: `${configs.baseUrl}${orderId}?Declined`,
+      // OrderNumber: String(orderId).padStart(6, '0'),
       Amount: parseAmount(amount)
     })
-    // setAuth(hashing(data))
   }
 
-  /**
-   *  Response expecting: 
-   * {
-        "responseCode": 9000,
-        "error": "",
-        "message": {
-            "key": "azul-payment",
-            "value": {
-                "amount": "30.30"
-            },
-            "use": 30,
-            "id": 5
-        },
-        "hasError": false,
-        "statusCode": 201
-      }
-  */
 
   useEffect(() => {
     setAuth(hashing(data))
@@ -75,6 +69,11 @@ const Application = () => {
               setError(true)
             } else {
               setUpData(result.message.id, result.message.value.amount)
+              setTimeout(() => {
+
+                const submitButton = document.getElementById('submit')
+                submitButton.click();
+               }, 1000)
             }
           }
         },
@@ -86,8 +85,13 @@ const Application = () => {
 
   useEffect(() => {
     fetchStorage()
-    // const submitButton = document.getElementById('submit')
-    // submitButton.click();
+    if (!error && loaded) {
+   setTimeout(() => {
+
+       const submitButton = document.getElementById('submit')
+       submitButton.click();
+      }, 1000)
+    }
   }, [fetchStorage])
 
   return (
@@ -195,7 +199,7 @@ const Application = () => {
               {/* <input type="hidden" id="CustomField2Label" name="CustomField2Label" value="Custom2"/>
 <input type="hidden" id="CustomField2Value" name="CustomField2Value" value="Value2"/> */}
               <input type='hidden' id='AuthHash' name='AuthHash' value={auth} />
-              <input type='submit' id='submit' value='Enviar' />
+              <input type='submit' id='submit' value='Enviar' style={{visibility: 'hidden'}} />
             </form>
           </header>
         </div>
@@ -210,11 +214,95 @@ const DefaultCmp = () => {
     </div>
   )
 }
+const SuccessTmp = () => {
+  let params = queryString.parse(window.location.search)
+
+  const savePayment = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    var raw = JSON.stringify(data);
+    // var raw = JSON.stringify({"vendorId":3,"userId":"13","paymentMethod":"azul","typeOfReservation":"stays","amount":20,"reservationId":16,"storageId":41,"paymentMethodResponse":{"ApprovedUrl":"","OrderNumber":"370","Amount":"1000","Itbis":"000","AuthorizationCode":"032449","DateTime":"20210525124414","ResponseCode":"ISO8583","IsoCode":"00","ResponseMessage":"APROBADA","ErrorDescription":"","RRN":"20210525124436127178","AuthHash":"de30f5800e02197379b96802207e19d346492363f5aead581f946838ed50635a2c1239a84407f7726f99adc747be3d0ca23b6316e40f21d54ef1df605b01f3be","CustomOrderId":"","CardNumber":"541599******5152","DataVaultToken":"","DataVaultExpiration":"","DataVaultBrand":"","AzulOrderId":"16697233"}});
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    fetch(`${configs.apiUrl}payments`, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        console.log(result)
+        window.location.href = `${configs.baseUrl}success`
+      })
+      .catch(error => console.log('error', error));
+  }
+
+
+  React.useEffect(() => {
+    console.log(params)
+
+    if (params.ResponseMessage == "APROBADA") {
+      console.log('do req')
+
+      const uri = `${configs.storageUrl}/${params.OrderNumber}`
+
+      fetch(`${uri}`, {
+        mode: 'cors'
+      })
+        .then(res => res.json())
+        .then(
+          result => {
+           console.log('r', )
+            const stored = result.message.value
+         const  data = {
+            vendorId: stored.data.vendorId,
+            userId: stored.data.userId,
+            paymentMethod: "azul",
+            typeOfReservation: stored.type,
+            amount: stored.amount,
+            reservationId:  stored.data.id,
+            storageId: params.OrderNumber,
+            paymentMethodResponse: params
+        }
+console.log('dd', data)
+          savePayment(data)
+          },
+          error => {
+            // setLoaded(true)
+          }
+        )
+    }
+
+
+
+
+
+  }, [params])
+  return (
+    
+    <div>
+  <SuspenseLoader></SuspenseLoader>
+    </div>
+  )
+}
+
+const Success = () => {
+  return (
+    <div>
+      Success
+    </div>
+  )
+}
 
 function App () {
   return (
     <Router>
       <Switch>
+        <Route exact path='/successtmp' component={SuccessTmp} />
+        <Route exact path='/success' component={Success} />
         <Route exact path='/:storageId' component={Application} />
         <Route exact path='*' component={DefaultCmp} />
       </Switch>
