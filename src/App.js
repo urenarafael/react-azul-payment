@@ -235,7 +235,7 @@ const SuccessTmp = () => {
       .then(response => response.text())
       .then(result => {
         console.log(result)
-        window.location.href = `${configs.baseUrl}success`
+        window.location.href = `${configs.baseUrl}successcompleted`
       })
       .catch(error => console.log('error', error));
   }
@@ -302,7 +302,7 @@ function App () {
     <Router>
       <Switch>
         <Route exact path='/successtmp' component={SuccessTmp} />
-        <Route exact path='/success' component={Success} />
+        <Route exact path='/successcompleted' component={Success} />
         <Route exact path='/:storageId' component={Application} />
         <Route exact path='*' component={DefaultCmp} />
       </Switch>
