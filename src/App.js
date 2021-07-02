@@ -117,6 +117,12 @@ const Application = () => {
                 name='MerchantId'
                 value={data.MerchantId}
               />
+              <input
+                type='hidden'
+                id='TrxType'
+                name='TrxType'
+                value="HOLD"
+              />
 
               <input
                 type='hidden'
