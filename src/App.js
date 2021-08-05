@@ -106,7 +106,7 @@ const Application = () => {
         <div className='App'>
           <header className='App-header'>
             <img
-              src={`https://i.imgur.com/oJcfEcD.png`}
+              src={`https://payments.nateevos.com/administrator/logo_trans.png`}
               className='App-logo'
               alt='logo'
             />
@@ -171,14 +171,14 @@ const Application = () => {
                 type='hidden'
                 id='LogoImageUrl'
                 name='LogoImageUrl'
-                value={`https://i.imgur.com/oJcfEcD.png`}
+                value={`https://payments.nateevos.com/administrator/logo_trans.png`}
               />
 
               <input
                 type='hidden'
                 id='ProductImageUrl'
                 name='ProductImageUrl'
-                value={`https://i.imgur.com/oJcfEcD.png`}
+                value={`https://payments.nateevos.com/administrator/logo_trans.png`}
               />
 
               <input
