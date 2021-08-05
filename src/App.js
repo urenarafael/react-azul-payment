@@ -112,7 +112,7 @@ const Application = () => {
             />
             <p></p>
             <form
-              action={`${configs.azulBaseUrl}/PaymentPage`}
+              action={`https://pagos.azul.com.do/PaymentPage/Default.aspx`}
               // action='https://pruebas.azul.com.do/PaymentPage/'
               method='post'
             >
