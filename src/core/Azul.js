@@ -1,10 +1,13 @@
 import jsSHA from 'jssha'
 import dollarsToCents from 'dollars-to-cents'
 const authKey =
-  'asdhakjshdkjasdasmndajksdkjaskldga8odya9d8yoasyd98asdyaisdhoaisyd0a8sydoashd8oasydoiahdpiashd09ayusidhaos8dy0a8dya08syd0a8ssdsax'
+  '&0ic2GtJ0v%h#9MuWLdYjstN1LWewHO9KHpRe2GVfcaNoO1w$t1JHgnMbvgqFX4K&H6hN0cD0pc3UQYyKCDjCZWyx6kO&V3PwsUUxZeiEO06WxvHmagJZaDaEKD9W0Vy'
+// const authKey =
+//   'asdhakjshdkjasdasmndajksdkjaskldga8odya9d8yoasyd98asdyaisdhoaisyd0a8sydoashd8oasydoiahdpiashd09ayusidhaos8dy0a8dya08syd0a8ssdsax' // test
 
 const info = {
-  MerchantId: '39038540035',
+  MerchantId: '39912110001',
+  // MerchantId: '39038540035', // test
   MerchantName: 'Nateevos',
   MerchantType: 'Travel',
   CurrencyCode: '$',

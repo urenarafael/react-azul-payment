@@ -17,8 +17,12 @@ import queryString from 'query-string';
 const configs = {
   apiUrl: 'https://api.nateevos.com/',
   storageUrl: 'https://api.nateevos.com/commons/storage',
-  baseUrl: 'https://payments.nateevos.com/'
+  baseUrl: 'https://payments.nateevos.com/',
+  azulBaseUrl: "https://pagos.azul.com.do"
+  // azulBaseUrl: "https://pruebas.azul.com.do" // test
 }
+
+
 // const configs = {
 //   apiUrl: 'http://localhost:3002/',
 //   storageUrl: 'http://localhost:3002/commons/storage',
@@ -108,7 +112,8 @@ const Application = () => {
             />
             <p></p>
             <form
-              action='https://pruebas.azul.com.do/PaymentPage/'
+              action={`${configs.azulBaseUrl}/PaymentPage`}
+              // action='https://pruebas.azul.com.do/PaymentPage/'
               method='post'
             >
               <input
