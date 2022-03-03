@@ -52,6 +52,7 @@ const Application = () => {
   };
 
   useEffect(() => {
+    console.log("data is", data);
     setAuth(hashing(data));
   }, [data]);
 
