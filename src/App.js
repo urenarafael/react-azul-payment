@@ -97,7 +97,7 @@ const Application = () => {
   }, [fetchStorage]);
 
   React.useEffect(() => {
-    console.log("response azul is", params);
+    console.log("response azul is", params.ResponseMessage, params);
     if (params.ResponseMessage == "DECLINADA") {
       console.log("response message when declined", params);
       window.location.href = `https://nateevos.com/azul-pay?response=Declined`;
