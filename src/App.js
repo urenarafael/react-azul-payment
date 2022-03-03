@@ -102,6 +102,10 @@ const Application = () => {
       console.log("response message when declined", params);
       window.location.href = `https://nateevos.com/azul-pay?response=Declined`;
     }
+    if (params.ResponseMessage == "TARJETA INVALIDA") {
+      console.log("response message when declined", params);
+      window.location.href = `https://nateevos.com/azul-pay?response=Declined&AzulResponse=${window.location.search}`;
+    }
   }, [params]);
 
   return (
