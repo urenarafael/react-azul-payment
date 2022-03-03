@@ -103,7 +103,19 @@ const Application = () => {
       window.location.href = `https://nateevos.com/azul-pay?response=Declined`;
     }
     if (params.ResponseMessage == "TARJETA INVALIDA") {
-      console.log("response message when declined", params);
+      console.log("response message when Tarjeta invalida", params);
+      window.location.href = `https://nateevos.com/azul-pay?response=Declined&AzulResponse=${window.location.search}`;
+    }
+    if (params["Cancelled"] !== undefined) {
+      console.log("response message when Cancelled", params);
+      window.location.href = `https://nateevos.com/azul-pay?response=Cancelled`;
+    }
+    if (params.ResponseMessage == "Error") {
+      console.log("response message when Error", params);
+      window.location.href = `https://nateevos.com/azul-pay?response=Declined&AzulResponse=${window.location.search}`;
+    }
+    if (params.ResponseMessage == "ERROR") {
+      console.log("response message when ERROR", params);
       window.location.href = `https://nateevos.com/azul-pay?response=Declined&AzulResponse=${window.location.search}`;
     }
   }, [params]);
@@ -263,10 +275,7 @@ const SuccessTmp = () => {
 
   React.useEffect(() => {
     console.log("response azul is", params);
-    if (params.ResponseMessage == "DECLINADA") {
-      console.log("response message when declined", params);
-      window.location.href = `https://nateevos.com/azul-pay?response=Declined`;
-    }
+
     if (params.ResponseMessage == "APROBADA") {
       console.log("do req");
 
@@ -307,6 +316,8 @@ const SuccessTmp = () => {
 };
 
 const Success = () => {
+  window.location.href = `https://nateevos.com/success`;
+
   return <div>Success</div>;
 };
 
