@@ -30,6 +30,7 @@ const configs = {
 
 const Application = () => {
   const { storageId } = useParams();
+  let params = queryString.parse(window.location.search);
 
   const url = `${configs.storageUrl}/${storageId}`;
 
@@ -94,6 +95,14 @@ const Application = () => {
       }, 1000);
     }
   }, [fetchStorage]);
+
+  React.useEffect(() => {
+    console.log("response azul is", params);
+    if (params.ResponseMessage == "DECLINADA") {
+      console.log("response message when declined", params);
+      window.location.href = `https://nateevos.com/azul-pay?response=Declined`;
+    }
+  }, [params]);
 
   return (
     <>
